@@ -1,6 +1,6 @@
 # sloppy: design
 
-A Claude Code mod that spellchecks the prompt box as you type. Status: design agreed in outline, nothing built.
+A Claude Code mod that spellchecks the prompt box as you type. Status: decisions taken 4 Nov 2026, first build starting.
 
 ## How it works inside
 
@@ -53,13 +53,21 @@ installed. Shipping the word list makes it work anywhere with no install.
   keystroke is out.
 - Decorations draw on the terminal and desktop surfaces only.
 
-## Open decisions
+## Decisions (4 Nov 2026)
 
-- **Dictionary:** recommended, a mid-size SCOWL English list shipped in the repo (roughly 1 to 2 MB).
-  The alternative, depending on hunspell, needs an install on every machine.
-- **Languages:** English only, or English plus Spanish as a merged set behind a `language` option.
-- **Style:** a red underline, or a configurable hex colour (decorations accept one).
-- **Timing:** judge a word after it is finished (recommended) or live.
+- **Dictionary:** a mid-size SCOWL English list shipped in the repo (roughly 1 to 2 MB), no hunspell.
+- **Languages:** English only for now. The word set is one file, so a second language later is a second file
+  behind a `language` option, not a redesign.
+- **Style:** underline in burnt orange `#b8642a` by default, a `color` option for another hex or `red`.
+- **Timing:** a word is judged once it is finished (a space, punctuation, or the cursor leaving it).
+- **Token efficient:** the mod never calls a model and adds nothing to the prompt, the transcript or the
+  context: underlines are paint only, suggestions live in the typeahead and die there, the personal list is
+  in `$.store`. Nothing it does costs a token.
+- **Keyboard only:** he rarely touches the mouse. Everything is reachable from the keys: the typeahead rows
+  take the engine's own arrow / tab / enter, and a way to jump the cursor to the next (and previous)
+  misspelled word so the typeahead can offer its rows there. If a mod cannot move the cursor, the fallback
+  is an immediate `/sloppy next` that reports the word and its position, and `/sloppy fix <n>` that takes
+  the n-th suggestion for the word at (or after) the cursor; the first build finds out which is possible.
 
 ## To verify in the first build
 
