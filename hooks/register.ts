@@ -59,7 +59,7 @@ export const register: Register = (on, options) => {
 
   on('command.run', { command: 'sloppy' }, async ($, e) => {
     const [verb = '', ...rest] = e.args.trim().split(/\s+/).filter(Boolean)
-    const say = (text: string) => ($.ui.toast(`sloppy: ${text}`), {})
+    const say = (text: string) => ($.ui.toast(text), {})
     const save = async () => {
       cache.clear()
       await $.store.set('words', [...mine].sort())

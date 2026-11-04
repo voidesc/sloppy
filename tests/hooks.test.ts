@@ -94,7 +94,7 @@ test('/sloppy add accepts a word across sessions and answers with a toast, no tr
   const r = await $.command.run(run('add Wrold'))
   expect(r.text).toBeUndefined()
   expect(store.get('words')).toEqual(['wrold'])
-  expect(toasts.at(-1)).toBe('sloppy: added wrold')
+  expect(toasts.at(-1)).toBe('added wrold')
   const e = await promptOf($).edit(typed('wrold', ' '))
   expect((e.decorations ?? []).filter(d => d.underline)).toEqual([])
   await $.command.run(run('remove wrold'))
@@ -110,7 +110,7 @@ test('/sloppy off stops the underlines and is kept; on brings them back', async 
   await $.command.run(run('on'))
   expect((await promptOf($).edit(typed('wrold', ' '))).decorations?.length).toBe(2)
   await $.command.run(run(''))
-  expect(toasts.at(-1)).toBe('sloppy: on, 9 words, 0 of yours')
+  expect(toasts.at(-1)).toBe('on, 9 words, 0 of yours')
 })
 
 test('personal words stored by an earlier session are read at start', async ($, on) => {
@@ -124,5 +124,5 @@ test('the enabled option off leaves the box alone', { options: { enabled: false 
   await $.session.start(start)
   expect((await promptOf($).edit(typed('wrold', ' '))).decorations?.length).toBe(1)
   await $.command.run(run('on'))
-  expect(toasts.at(-1)).toBe('sloppy: turned off in its settings (enabled)')
+  expect(toasts.at(-1)).toBe('turned off in its settings (enabled)')
 })

@@ -31,11 +31,11 @@ export function maskedRanges(text: string): Array<[number, number]> {
   let open: { at: number; mark: string } | undefined
   let at = 0
   for (const line of text.split('\n')) {
-    const m = /^[ \t]*(`{3,}|~{3,})/.exec(line)
-    if (open && m && m[1][0] === open.mark[0] && m[1].length >= open.mark.length) {
+    const mark = /^[ \t]*(`{3,}|~{3,})/.exec(line)?.[1]
+    if (open && mark && mark[0] === open.mark[0] && mark.length >= open.mark.length) {
       out.push([open.at, at + line.length])
       open = undefined
-    } else if (!open && m) open = { at, mark: m[1] }
+    } else if (!open && mark) open = { at, mark }
     at += line.length + 1
   }
   if (open) out.push([open.at, text.length])
@@ -168,7 +168,7 @@ export function edits1(w: string): Map<string, number> {
 /** Writes a suggestion in the case the person typed: Capitalised stays Capitalised. */
 export function inCase(typed: string, fix: string): string {
   const first = typed[0]
-  if (first && first !== first.toLowerCase() && typed.slice(1) === typed.slice(1).toLowerCase()) return fix[0].toUpperCase() + fix.slice(1)
+  if (first && first !== first.toLowerCase() && typed.slice(1) === typed.slice(1).toLowerCase()) return fix.charAt(0).toUpperCase() + fix.slice(1)
 
   return fix
 }

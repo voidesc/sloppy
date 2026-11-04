@@ -54,6 +54,7 @@ test('the word holding the caret while typing is not judged yet', () => {
 test('offsets are UTF-16 code units, emoji and accents before the word included', () => {
   const text = '🙂 café wrold'
   const [s] = misses(text, DICT, NONE, new Map())
+  if (!s) throw new Error('no miss')
   expect(s.word).toBe('wrold')
   expect(text.slice(s.start, s.end)).toBe('wrold')
   expect(s.start).toBe(8)
