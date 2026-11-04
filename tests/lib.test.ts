@@ -2,7 +2,7 @@ import { expect, test } from 'claude-code/testing'
 
 import { inCase, jump, misses, parseDict, suggest, words } from '../hooks/lib'
 
-const DICT = parseDict(['# test list', '#10', 'the', 'cat', 'sat', 'on', 'mat', 'a', "don't", 'well', 'known', 'hello', 'world', '#50', 'than', 'then', 'thee', 'cafe', 'café', '#70', 'teh'].join('\n'))
+const DICT = parseDict(['# test list', '#10', 'tea', 'ten', 'eh', 'the', 'cat', 'sat', 'on', 'mat', 'a', "don't", 'well', 'known', 'hello', 'world', '#50', 'than', 'then', 'thee', 'cafe', 'café', '#70', 'teh'].join('\n'))
 const NONE = new Set<string>()
 const list = (text: string) => words(text).map(s => s.word)
 const bad = (text: string, typing?: number) => misses(text, DICT, NONE, new Map(), typing).map(s => s.word)
@@ -63,10 +63,11 @@ test('personal words are accepted', () => {
   expect(misses('wrold', DICT, new Set(['wrold']), new Map())).toEqual([])
 })
 
-test('suggestions: one edit first, ranked by how common, at most five', () => {
-  expect(suggest('teh', DICT, NONE)).toEqual(['the'])
+test('suggestions: one edit first, a swap and a kept first letter before the rest, then how common', () => {
+  expect(suggest('teh', DICT, NONE)).toEqual(['the', 'tea', 'ten', 'eh'])
   expect(suggest('wrold', DICT, NONE)).toEqual(['world'])
-  expect(suggest('thn', DICT, NONE)).toEqual(['the', 'than', 'then'])
+  expect(suggest('thn', DICT, NONE)).toEqual(['ten', 'the', 'than', 'then'])
+  expect(suggest('Teh', DICT, NONE)[0]).toBe('The')
   expect(suggest('xyzzyq', DICT, NONE)).toEqual([])
   expect(suggest('Wrold', DICT, NONE)).toEqual(['World'])
   expect(suggest('helo', DICT, NONE)[0]).toBe('hello')

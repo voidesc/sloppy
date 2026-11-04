@@ -139,20 +139,28 @@ export function misses(text: string, dict: Dict, mine: ReadonlySet<string>, cach
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyz'"
 
-/** Every string one edit away: a letter deleted, two swapped, one replaced, one inserted. */
-export function edits1(w: string): Set<string> {
-  const out = new Set<string>()
+/**
+ * Every string one edit away (a letter deleted, two neighbours swapped, one replaced, one inserted), each with
+ * how unlikely the slip is: a swap 0, the others 1, one more when the first letter changed.
+ */
+export function edits1(w: string): Map<string, number> {
+  const out = new Map<string, number>()
+  const add = (x: string, cost: number) => {
+    if (x === w) return
+    const c = cost + (x[0] === w[0] ? 0 : 1)
+    const was = out.get(x)
+    if (was === undefined || c < was) out.set(x, c)
+  }
   for (let i = 0; i <= w.length; i++) {
     const a = w.slice(0, i)
     const b = w.slice(i)
-    if (b) out.add(a + b.slice(1))
-    if (b.length > 1) out.add(a + b[1] + b[0] + b.slice(2))
+    if (b.length > 1) add(a + b[1] + b[0] + b.slice(2), 0)
+    if (b) add(a + b.slice(1), 1)
     for (const c of ALPHABET) {
-      if (b) out.add(a + c + b.slice(1))
-      out.add(a + c + b)
+      if (b) add(a + c + b.slice(1), 1)
+      add(a + c + b, 1)
     }
   }
-  out.delete(w)
 
   return out
 }
@@ -167,23 +175,27 @@ export function inCase(typed: string, fix: string): string {
 
 /**
  * Corrections for a word: everything one edit away that the list or the personal words hold, else two edits
- * away; ranked by distance, then by how common (SCOWL size), then alphabetically; at most `limit`.
+ * away; ranked by how likely the slip is (a swap first, the first letter kept), then by how common the word
+ * is (SCOWL size), then alphabetically; at most `limit`.
  */
 export function suggest(typed: string, dict: Dict, mine: ReadonlySet<string>, limit = 5): string[] {
   const w = fold(typed)
   const rank = (x: string) => dict.get(x) ?? (mine.has(x) ? 50 : 1000)
   const has = (x: string) => dict.has(x) || mine.has(x)
-  const order = (a: string, b: string) => rank(a) - rank(b) || (a < b ? -1 : a > b ? 1 : 0)
   const one = edits1(w)
-  let found = [...one].filter(has)
-  if (found.length === 0 && w.length <= 14) {
-    const two = new Set<string>()
-    for (const e of one) for (const f of edits1(e)) if (f !== w && has(f)) two.add(f)
-    found = [...two]
+  let found = new Map([...one].filter(([x]) => has(x)))
+  if (found.size === 0 && w.length <= 10) {
+    for (const [e, c1] of one) {
+      for (const [f, c2] of edits1(e)) {
+        if (f === w || !has(f)) continue
+        const was = found.get(f)
+        if (was === undefined || c1 + c2 < was) found.set(f, c1 + c2)
+      }
+    }
   }
-  found.sort(order)
+  const order = ([a, ca]: [string, number], [b, cb]: [string, number]) => ca - cb || rank(a) - rank(b) || (a < b ? -1 : a > b ? 1 : 0)
 
-  return found.slice(0, limit).map(f => inCase(typed, f))
+  return [...found].sort(order).slice(0, limit).map(([f]) => inCase(typed, f))
 }
 
 /** The next misspelled word after the caret (`dir` 1) or the one before it (`dir` -1): where to stand the caret, its end. */
