@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="236" viewBox="0 0 640 236" font-family="JetBrains Mono, Iosevka, Menlo, Consolas, monospace" font-size="16">
+<rect width="640" height="236" rx="10" fill="#181616"/>
+<rect x="14" y="30" width="612" height="46" rx="6" fill="none" stroke="#625e5a" stroke-width="1"/>
+<text x="28" y="58" fill="#625e5a" textLength="9.6" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="47.2" y="58" fill="#c5c9c5" font-weight="normal" textLength="355.2" lengthAdjust="spacingAndGlyphs">Teh brown fox jumps ovre the lazy dog</text>
+<line x1="47.2" y1="63" x2="76.0" y2="63" stroke="#b8642a" stroke-width="2"/>
+<line x1="239.2" y1="63" x2="277.6" y2="63" stroke="#b8642a" stroke-width="2"/>
+<rect x="277.6" y="45" width="9.6" height="18" fill="#c5c9c5" opacity="0.85"/>
+<rect x="231.2" y="82" width="92.8" height="22" rx="4" fill="#2a2a37"/>
+<text x="239.2" y="98" fill="#c5c9c5" textLength="38.4" lengthAdjust="spacingAndGlyphs">over</text>
+<text x="239.2" y="122" fill="#625e5a" textLength="38.4" lengthAdjust="spacingAndGlyphs">ogre</text>
+<text x="239.2" y="146" fill="#625e5a" textLength="28.8" lengthAdjust="spacingAndGlyphs">ore</text>
+<text x="239.2" y="170" fill="#625e5a" textLength="48.0" lengthAdjust="spacingAndGlyphs">ovate</text>
+<text x="239.2" y="194" fill="#625e5a" textLength="48.0" lengthAdjust="spacingAndGlyphs">ovule</text>
+<text x="28" y="224" fill="#625e5a" font-size="12" textLength="136.8" lengthAdjust="spacingAndGlyphs">tab takes the first</text><text x="200" y="224" fill="#625e5a" font-size="12" textLength="367.2" lengthAdjust="spacingAndGlyphs">shift+← / shift+→ jump between misspelled words</text>
+</svg>

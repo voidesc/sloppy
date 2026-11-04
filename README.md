@@ -2,6 +2,8 @@
 
 A Claude Code mod that spellchecks the prompt box as you type.
 
+![the prompt box with two underlined words and the corrections beneath it](docs/sloppy.svg)
+
 - A misspelled word gets an underline (burnt orange by default) once you have finished it: a space or
   punctuation after it, or the caret moved away. Nothing flashes mid-word.
 - With the caret at the end of a misspelled word, the typeahead lists up to five corrections. Tab takes the
