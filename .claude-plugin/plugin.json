@@ -1,0 +1,23 @@
+{
+  "name": "sloppy",
+  "version": "0.1.0",
+  "description": "Spellchecks the prompt box as you type: misspelled words underlined, corrections in the typeahead, shift+arrows jump between them",
+  "author": {
+    "name": "Aleksey"
+  },
+  "license": "MIT",
+  "userConfig": {
+    "color": {
+      "title": "Underline colour",
+      "type": "string",
+      "description": "The colour of the underline under a misspelled word: #rrggbb or a colour name such as red",
+      "default": "#b8642a"
+    },
+    "enabled": {
+      "title": "Enabled",
+      "type": "boolean",
+      "description": "Spellcheck the prompt box; /sloppy on and /sloppy off toggle it too",
+      "default": true
+    }
+  }
+}
